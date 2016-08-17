@@ -77,14 +77,17 @@ function [poshidexp2] = crbm_inference(image, patch, weight, Tlist, params,ii)
 %     fname = sprintf('hidstates1th_alloy2_(24f6wsP10Pb01)_%d',ii);
 %     save(sprintf('%s.mat',fname),'hidstate', '-v7.3');
     
-    addpath('circle reconstruction');
-    fname=sprintf('reconst_rand_circlecut_5to1_(1f1000f500f100f30f)_thr02');
+%     addpath('circle reconstruction');
+    fname=sprintf('hidstate_test');
     load(sprintf('%s.mat',fname));
-    hidstate=reshape(double((reconst_2to1(:,ii))),[35721 1])';
+    hidstate=reshape(hidstate_test1,[12 2 38025]);
+%     hidstate=reshape(double((reconst_2to1(:,ii))),[35721 1])';
 % %     hidstate=reshape(hidstate,[2 189 189]);
 % %     hidstate(2,:,:)=hidstate(1,:,:);
-    hidstate=reshape(hidstate,[1 1 35721/1]);
-    
+%     hidstate=double(im2bw(hidstate,0.1));
+%     hidstate=sigmoid(hidstate);
+%     hidstate=reshape(hidstate,[1 1 35721/1]);
+
  
     negdata = zeros(L, H, numchannels);
     for nf = 1:numhid

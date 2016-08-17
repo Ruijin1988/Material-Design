@@ -1,8 +1,8 @@
 clear;
-addpath('utils','function_code','hdstate_2ndlayer(1stpool2)_sandstone_(2f40f6ws9ws)')
-One=load('sandstone_nowhinonor_limitpatch_ws6_f24_alloy_w6_b24_rot_nrot1_pb0.11_pl5_iter_2000.mat');
+addpath('utils','function_code','hidstate_2ndlayer_alloy(poolratio02)_(24f80f6ws9ws)')
+One=load('WB_nowh_P20Pb01_rot12_2f_6ws_alloy_w6_b02_rot_nrot12_pb0.1_pl20_iter_4000.mat');
 
-fname=sprintf('sandstone_2nd_limitpatch_imresize2_hidstate_(2f40f6ws9ws)_alloy_w9_b40_trans_ntx1_gr1_pb0.1_pl3_iter_2000');
+fname=sprintf('alloy_2nd_hidstate_pool2_(24f80f6ws9ws)_alloy_w9_b80_trans_ntx1_gr1_pb0.1_pl10_iter_2000');
 Two=load(sprintf('%s.mat',fname));
 %% filter pooling back
 W=gather(Two.weight);
@@ -36,27 +36,38 @@ ws_Two=params_Two.ws;
 Tlist = get_txmat(params_One.txtype, params_One.rs, params_One.ws, params_One.grid, params_One.numrot, params_One.numch);
 
 negdata_2nd=zeros(100,178*178);
-for ii = 1:60
+for ii = 1:100
         
-    fname=sprintf('hidstate_2ndlayer(1stp2)_sandstone_limitpatch_(2f40f6ws9wsP3Pb01)_%d',ii); %WB
+    fname=sprintf('hidstate_2ndlayer_alloy(poolratio02)_(24f80f6ws9ws)_%d',ii); %WB
     load([fname '.mat'],'hidstate');
     
     %% pool back hidstate
+%     for pp=1:size(hidstate,1)
+%         hidstate=reshape(hidstate,[40 7921]);
+%         hidstate_temp=reshape(hidstate(pp,:),[sqrt(size(hidstate,2)),sqrt(size(hidstate,2))]);
+%        for m = 1:sqrt(size(hidstate,2))
+%             for n = 1:sqrt(size(hidstate,2))
+%                 if hidstate_temp(m,n)==1
+%                     hidstate_pool2(2*m-1:2*m,2*n-1:2*n)=1;
+%                 else
+%                     hidstate_pool2(2*m-1:2*m,2*n-1:2*n)=0;
+%                 end
+%             end
+%        end
+%         hidstate_2nd_layer(pp,:)=hidstate_pool2(:);
+%     end
+%     hidstate=reshape(hidstate_2nd_layer,[40 1 178*178]);  
+    
+    %% pool with resize
     for pp=1:size(hidstate,1)
-        hidstate=reshape(hidstate,[40 7921]);
-        hidstate_temp=reshape(hidstate(pp,:),[sqrt(size(hidstate,2)),sqrt(size(hidstate,2))]);
-       for m = 1:sqrt(size(hidstate,2))
-            for n = 1:sqrt(size(hidstate,2))
-                if hidstate_temp(m,n)==1
-                    hidstate_pool2(2*m-1:2*m,2*n-1:2*n)=1;
-                else
-                    hidstate_pool2(2*m-1:2*m,2*n-1:2*n)=0;
-                end
-            end
-       end
-        hidstate_2nd_layer(pp,:)=hidstate_pool2(:);
+        hidstate=reshape(hidstate,[80 7921]);
+        hidstate_temp=reshape(hidstate(pp,:),[sqrt(size(hidstate,2)),sqrt(size(hidstate,2))]);    
+        hidstate_pool2=im2bw(imresize(hidstate_temp,[178 178]),0.2);
+        hidstate_2nd_layer(pp,:)=double(hidstate_pool2(:));
     end
-    hidstate=reshape(hidstate_2nd_layer,[40 1 178*178]);    
+    hidstate=reshape(hidstate_2nd_layer,[80 1 178*178]);
+    
+    
         
     %% 2nd layer reconstruction    
     numchannels=params_Two.numch;
@@ -73,7 +84,7 @@ for ii = 1:60
 negdata = sigmoid(negdata);
 hidstate=negdata;
 hidstate=permute(hidstate,[3,1,2]);
-hidstate=reshape(hidstate,[1,24,L1^2]);
+hidstate=reshape(hidstate,[12,2,L1^2]);
 
 
 %% 1st layer reconstruction
@@ -101,7 +112,7 @@ negdata = zeros(L1, H1, numchannels);
             S1=im2bw(S1);
             S1=double(S1);
             filter_x = ones(2,2);
-            for i = 1:4
+            for i = 1:2
                 S1=conv2(S1,filter_x,'same');
                 S1=floor(S1/4);
             end
@@ -120,6 +131,6 @@ negdata_2nd(ii,:)=negdata(:);
 %     fname = sprintf('recon_2nd_(2f40f6ws18ws12rP20P10Pb01)_%d',ii);
 %     save(sprintf('%s.txt',fname),'negdata', '-ascii');
     
-figure(1);display_network(reshape(negdata(:,:,1),size(negdata,1)*size(negdata,2),1),ii);
+figure,display_network(reshape(negdata(:,:,1),size(negdata,1)*size(negdata,2),1),ii);
 store(:,ii)=negdata(:);
 end

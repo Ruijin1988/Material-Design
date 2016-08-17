@@ -95,7 +95,7 @@ params.numtx = length(Tlist);
 
 % filename to save
 if strcmp(params.txtype, 'rot'),
-    fname = sprintf('alloy2_nonor_ws12_f24_%s_w%d_b%02d_%s_nrot%d_pb%g_pl%g', ...
+    fname = sprintf('circle_f1_test_%s_w%d_b%02d_%s_nrot%d_pb%g_pl%g', ...
         params.dataset, params.ws, params.numhid, params.txtype, params.numtx, params.pbias, params.plambda);
 % trans and scale will be ignored here
 elseif strcmp(params.txtype, 'trans') || strcmp(params.txtype, 'scale'),

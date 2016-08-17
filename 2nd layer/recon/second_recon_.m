@@ -1,6 +1,6 @@
-fname=sprintf('alloy2_2nd_hidstate_pool2_(24f40f6ws9ws)_alloy_w9_b40_trans_ntx1_gr1_pb0.3_pl10_iter_1000');
+fname=sprintf('alloy_2nd_hidstate_pool2_(24f80f6ws9ws)_alloy_w9_b80_trans_ntx1_gr1_pb0.1_pl10_iter_2000');
 load(sprintf('%s.mat',fname));
-addpath('utils','function_code','alloy2_hidstate_1layer(24f6ws)');
+addpath('utils','function_code','hidstate1st_WB_nowh_2f_6ws_12r_P20Pb01');
 params.optgpu = 0;
 spacing = 1;
 ws=params.ws;
@@ -74,11 +74,11 @@ params.numtx = length(Tlist);
 
 % load('recon_from2to1');
 % image2=negdata;
-for ii = 1:80
-fname=sprintf('hidstates1th_alloy2_imresize2_(24f6ws)_%d',ii);
-load([fname '.mat'],'temp3');
+for ii = 1:100
+fname=sprintf('hidstate_1stlayer(poolratio02)_(2f40f6ws9ws12rP20P10Pb01)_%d',ii);
+load([fname '.mat'],'hidstate');
 
-hidstate=temp3;
+% hidstate=temp3;
 
 image2=hidstate;
 image2=reshape(image2,[sqrt(size(image2,1)),sqrt(size(image2,1)),size(image2,2)]);

@@ -1,12 +1,12 @@
 for ii = 1:100
-fname = sprintf('WB_nowh_hidstate_1layer(2f6ws12rP20Pb01)_%d',ii);
+fname = sprintf('hidstate_1stlayer(poolratio02)_(2f40f6ws9ws12rP20P10Pb01)_%d',ii);
 f1=load(sprintf('%s.mat', fname));   
 temp = double([f1.hidstate;]);
-temp = permute(temp,[3,2,1]);
+% temp = permute(temp,[3,2,1]);
 xtr(ii,:) = temp(:)';
 % f1=load([CIFAR_DIR '/filter8_ws12.mat']);
 end
-fname = sprintf('WB_nowh_hidstate_1layer(2f12ws12rP20Pb01)');
+fname = sprintf('hidstate_1stlayer(poolratio02)_(2f40f6ws9ws12rP20P10Pb01)');
 save(sprintf('%s.mat',fname),'xtr', '-v7.3');
 % rearrange for max pooling
 % for ii = 1:99

@@ -122,7 +122,7 @@ for t = 1:params.maxiter,
 %         if params.optgpu,
 %             xb = gpuArray(xb);
 %         end
-        if mod(t,1000)==0
+        if mod(t,10000)==0
             wait=1;
         end
         % update trbm
@@ -265,7 +265,7 @@ for t = 1:params.maxiter,
 %     if params.epsilon <0.00005
 %        return 
 %     end    
-    if mod(t,10000) == 0,
+    if mod(t,100000) == 0,
         % save trained weight
         weight = cpu2gpu_struct(weight);
         history = cpu2gpu_struct(history);
@@ -279,7 +279,7 @@ for t = 1:params.maxiter,
     end
     
     
-    if mod(t,10000)==0
+    if mod(t,200000)==0
         wait=1;
     end
 %     if mod(t,500) == 0
