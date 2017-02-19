@@ -57,5 +57,21 @@ so that we could not reconstruct the original images with the extracted features
   ```
   matlab recon_2nd_filter.m; recon_3rd_filter;
   ```
-- To check the reconstruction result
+- Use the following code to check reconstruction result(please change the trained weight file accordingly).
+
+  ```
+  matlab ?????;
+  ```
+- To check the random reconstruction, the process is similar to the above, but to change the '5th layer hidstate' to randomly generated binary vector(size(1,30) in the default setting). Note for different training samples, the sparsity is different, so the randomly generated binary vector should be adjusted based on that.
+
+  ```
+  matlab ?????;
+  ```
+- For microsture Ti-6Al-4V, post-processing is required, as shown in the following plot:
+
+![](images/post_processing.PNG)
+  ```
+  matlab ?????;
+  python post_processing.ipython(skeletonization);
+  ```
 
