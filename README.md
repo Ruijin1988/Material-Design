@@ -1,7 +1,7 @@
 # Microstructure Representation and Reconstruction of Heterogeneous Materials via Deep Belief Network for Computational Material Design
 ## Ruijin Cang, Max Yi Ren
 Full paper here: [https://arxiv.org/abs/1612.07401](https://arxiv.org/abs/1612.07401)
-##Summary of the proposed CDBN
+# Summary of the proposed CDBN
 We 
 - Set up a 5-layer network consisted by 3 layers of convolutional RBM and 2 fully connected RBM
 
@@ -57,21 +57,27 @@ so that we could not reconstruct the original images with the extracted features
   ```
   matlab recon_2nd_filter.m; recon_3rd_filter;
   ```
-- Use the following code to check reconstruction result(please change the trained weight file accordingly).
+- Use the following code to check reconstruction result(please change the trained weight file accordingly). 
 
   ```
-  matlab ?????;
+  matlab 1st layer recon: recon_WB.m(comment the lines for hidstate generation, visualize 'store_test1');
+  matlab 2nd layer recon: hid_to_vis_test.m(please change the trained weights accordingly)
+  matlab 3rd layer recon: thirdlayer_hid_to_vis_ori.m(please change the trained weights accordingly)
+  For 4th and 5th, since they're fully connected please use sigmoid(W*v+bias) to recon it back to 3rd layer and use the above code for the rest of of the steps. Please refer to 'recon_5to1.m'
   ```
+  
+  
 - To check the random reconstruction, the process is similar to the above, but to change the '5th layer hidstate' to randomly generated binary vector(size(1,30) in the default setting). Note for different training samples, the sparsity is different, so the randomly generated binary vector should be adjusted based on that.
 
   ```
-  matlab ?????;
+  matlab 'recon_5to1.m';
   ```
-- For microsture Ti-6Al-4V, post-processing is required, as shown in the following plot:
+- For microsture Ti-6Al-4V, post-processing is required. One thing to be noticed: for Ti-6Al-4V, recon back to 3rd layer is always overly saturated. The slightly activated nodes in the 3rd layer across its 288 channels lead to regions in the input layer with overlapped grain boundaries (as black pixels) and such regions are undesirably visualized as voids. Through experiments, we found that thresholding the activations of the 3rd layer at $\tau=0.5$ achieves the lowest average reconstruction error from the original Ti64 samples as shown below. as shown in the following plot:
+
+  ```
+  matlab recon_5to1.m(line 27,thresholding);
+  python Post-Process(Skeletonization).ipynb for skeletonization
+  ```
 
 ![](images/post_processing.PNG)
-  ```
-  matlab ?????;
-  python post_processing.ipython(skeletonization);
-  ```
 
