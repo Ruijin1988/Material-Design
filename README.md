@@ -51,4 +51,11 @@ so that we could not reconstruct the original images with the extracted features
 ![](images/compare.PNG)
 
 # Impelementation Notice:
+- To visualize the each layer's filter please:
+  * first layer: load the results//weights and visualize the matrix "gather(weight.vishid)"
+  * other layers: refer to code:
+  ```
+  matlab recon_2nd_filter.m; recon_3rd_filter;
+  ```
+- To check the reconstruction result
 
